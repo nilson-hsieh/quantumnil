@@ -1,0 +1,53 @@
+# Creating multi-stage build for production (GCP optimized)
+FROM node:20-alpine AS build
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+RUN echo "Production"
+RUN corepack enable
+WORKDIR /opt/app
+
+# Copy dependency files and .yarn directory
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn .yarn
+
+# Install dependencies in /opt/app
+RUN yarn install
+
+# Copy the rest of your app code
+COPY . .
+
+# Build your app
+RUN yarn build
+
+# Remove dev dependencies for smaller image
+RUN yarn workspaces focus --production && yarn cache clean
+
+# --- Final image ---
+FROM node:20-alpine
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# Install dumb-init for proper signal handling in containers
+RUN apk add --no-cache dumb-init
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && adduser -S strapi -u 1001
+
+WORKDIR /opt/app
+
+# Copy built application with proper ownership
+COPY --from=build --chown=strapi:nodejs /opt/app ./
+
+# Ensure uploads directory exists and has correct permissions
+RUN mkdir -p /opt/app/public/uploads && chown -R strapi:nodejs /opt/app
+
+RUN corepack enable
+USER strapi
+
+# Strapi default port
+EXPOSE 1337
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["yarn", "start"]

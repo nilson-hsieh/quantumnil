@@ -1,0 +1,44 @@
+{
+  "name": "strapi",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Strapi CMS Backend",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@strapi-community/strapi-provider-upload-google-cloud-storage": "^5.0.5",
+    "@strapi/plugin-i18n": "4.15.0",
+    "@strapi/provider-upload-aws-s3": "^5.12.7",
+    "@strapi/strapi": "4.15.0",
+    "better-sqlite3": "^11.1.2",
+    "custom-slug": "^2.1.1",
+    "pg": "^8.12.0",
+    "react-router-dom": "^6.26.1",
+    "strapi-plugin-import-export-entries": "^1.23.1",
+    "strapi-plugin-populate-deep": "^3.0.1",
+    "styled-components": "^6.1.12"
+  },
+  "author": {
+    "name": "QuantumNil"
+  },
+  "strapi": {
+    "uuid": "633ae733-713e-4ffb-b0e8-08b401a6a668"
+  },
+  "engines": {
+    "node": ">=16.19.1 <=18.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "g": "^2.0.1",
+    "knex": "^3.1.0",
+    "node-ts": "^6.1.0",
+    "sqlite3": "^5.1.7",
+    "typescript": "^5.5.4"
+  },
+  "packageManager": "yarn@4.9.2"
+}
