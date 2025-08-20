@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  IMAGE_NAME: nilson0313/nqbe:tagname
+  IMAGE_NAME: nilson0313/nqbe
 
 jobs:
   build-and-push:
