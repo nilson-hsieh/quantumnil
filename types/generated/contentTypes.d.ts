@@ -466,12 +466,6 @@ export interface ApiNewsNews extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    isTrending: Attribute.Boolean &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -518,6 +512,12 @@ export interface ApiNillAppNillApp extends Schema.CollectionType {
         };
       }>;
     content: Attribute.Text &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    order: Attribute.Integer &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
