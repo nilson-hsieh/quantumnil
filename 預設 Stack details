@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: strapi-postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: strapiGCPPassword123
+    # 僅本機測試才需要開 5432 對外；正式環境建議拿掉
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  strapi-backend:
+    image: nilson0313/nqbe:latest
+    container_name: strapi-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 1337
+
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: postgres
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: strapiGCPPassword123
+      DATABASE_SSL: "false"
+      DATABASE_SCHEMA: public
+
+      API_TOKEN_SALT: 4TRaElEs3E7DVgSUFvHbLw==
+      ADMIN_JWT_SECRET: HcGFmF0GKl11WbG3qKzLPQ==
+      TRANSFER_TOKEN_SALT: v3+Admnbhw3KZXSHt7tBJg==
+      ENCRYPTION_KEY: wV29WcjOCQeWt4q5Sucq4g==
+      APP_KEYS: VyTS9Rck/Kq2A8/w5rtWIw==,uct5+2b2BkuPwQdyO9C+NA==,puTUIRZa0NdxuJF+DqdE9A==,+heNNt2fnGyriOqkFvEPLQ==
+
+    ports:
+      - "1337:1337"
+    volumes:
+      - strapi-app:/srv/app
+      - strapi-uploads:/srv/app/public/uploads
+      - strapi-database:/opt/app/database/migrations
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  strapi-app:
+  strapi-uploads:
+  strapi-database:

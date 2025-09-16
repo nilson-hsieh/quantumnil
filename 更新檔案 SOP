@@ -1,0 +1,9 @@
+1.先將這檔案push 到github 上
+2.到  https://docker.websiteszoo.com/
+3.進入  Stacks 的  Stacks list
+4.進入 strapi_quantumnil
+5.選擇 Editor
+6.下滑到 Actions 點 update the stack
+7.Re-pull image and redeploy (打勾)
+8.點選 update 
+9.完成更新 
